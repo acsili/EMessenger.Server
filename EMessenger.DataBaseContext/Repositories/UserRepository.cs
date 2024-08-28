@@ -30,10 +30,9 @@ namespace EMessenger.DataBaseContext.Repositories
         /// </summary>
         /// <param name="entity">Пользователь</param>
         /// <returns></returns>
-        public bool Add(User entity)
+        public async Task Add(User entity)
         {
-            context.Users.Add(entity);
-            return Save();
+            await context.Users.AddAsync(entity);
         }
 
         /// <summary>
@@ -41,10 +40,9 @@ namespace EMessenger.DataBaseContext.Repositories
         /// </summary>
         /// <param name="entity">Пользователь.</param>
         /// <returns></returns>
-        public bool Delete(User entity)
+        public void Delete(User entity)
         {
             context.Users.Remove(entity);
-            return Save();
         }
 
         /// <summary>
@@ -80,10 +78,9 @@ namespace EMessenger.DataBaseContext.Repositories
         /// Сохранить данные в БД.
         /// </summary>
         /// <returns></returns>
-        public bool Save()
+        public async Task SaveAsync()
         {
-            int saved = context.SaveChanges();
-            return saved > 0;
+            await context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -91,10 +88,19 @@ namespace EMessenger.DataBaseContext.Repositories
         /// </summary>
         /// <param name="entity">Пользователь.</param>
         /// <returns></returns>
-        public bool Update(User entity)
+        public void Update(User entity)
         {
             context.Users.Update(entity);
-            return Save();
+        }
+
+        /// <summary>
+        /// Получить чаты пользователя.
+        /// </summary>
+        /// <param name="userId">Идентификатор пользователя.</param>
+        /// <returns>Чаты.</returns>
+        public IEnumerable<Chat> GetChatsByUserId(int userId)
+        {
+            return context.Users.Include(x => x.Chats).FirstOrDefault(x => x.Id == userId).Chats;
         }
 
         #endregion

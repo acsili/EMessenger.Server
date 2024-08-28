@@ -31,26 +31,26 @@ namespace EMessenger.DataBaseContext.Interfaces
         /// </summary>
         /// <param name="entity">Сущность.</param>
         /// <returns>Результат добавления.</returns>
-        bool Add(T entity);
+        Task Add(T entity);
 
         /// <summary>
         /// Обновить сущность в БД.
         /// </summary>
         /// <param name="entity">Сущность.</param>
         /// <returns>Результат обновления.</returns>
-        bool Update(T entity);
+        void Update(T entity);
 
         /// <summary>
         /// Удалить сущность из БД.
         /// </summary>
         /// <param name="entity">Сущность.</param>
         /// <returns>Результат удаления.</returns>
-        bool Delete(T entity);
+        void Delete(T entity);
 
         /// <summary>
         /// Сохранить все изменения в БД.
         /// </summary>
         /// <returns>Результат сохранения.</returns>
-        bool Save();
+        Task SaveAsync();
     }
 }

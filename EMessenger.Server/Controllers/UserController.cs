@@ -28,29 +28,39 @@ namespace EMessenger.Server.Controllers
         /// </summary>
         /// <param name="userDto">Пользователь.</param>
         /// <returns>Статус запроса.</returns>
-        [HttpPost]
-        public IActionResult AddUser(UserDto userDto)
+        [HttpPost("AddUser")]
+        public  async Task<IActionResult> AddUser(UserDto userDto)
         {
             User user = new User()
             {
-                NickName = userDto.NickName,
-                CreatedAt = DateTime.Now,
+                NickName = userDto.NickName
             };
-            var response = userRepository.Add(user);
-            if (response)
-                return Ok();
-            else
-                return NotFound();
+            await userRepository.Add(user);
+            await userRepository.SaveAsync();
+            return Ok();
+            //return NotFound();
         }
 
         /// <summary>
         /// Получить всех пользователей.
         /// </summary>
         /// <returns>Статус запроса.</returns>
-        [HttpGet]
+        [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
             var response = await userRepository.GetAllAsync();
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Поулить чаты пользователя.
+        /// </summary>
+        /// <param name="userId">Id пользователя.</param>
+        /// <returns>Чаты и статус запроса.</returns>
+        [HttpGet("GetUserChats")]
+        public IActionResult GetUserChats(int userId)
+        {
+            var response = userRepository.GetChatsByUserId(userId);
             return Ok(response);
         }
 

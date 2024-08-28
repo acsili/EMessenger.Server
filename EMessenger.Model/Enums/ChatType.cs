@@ -19,6 +19,11 @@ namespace EMessenger.Model.Enums
         /// <summary>
         /// Общий.
         /// </summary>
-        General
+        General,
+
+        /// <summary>
+        /// Беседа.
+        /// </summary>
+        Group
     }
 }

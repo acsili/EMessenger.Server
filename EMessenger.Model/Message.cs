@@ -12,14 +12,14 @@ namespace EMessenger.Model
     public class Message
     {
         /// <summary>
-        /// 
+        /// Идентификатор
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Идентификатор.
+        /// Дата создания сообщения.
         /// </summary>
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Текст сообщения.

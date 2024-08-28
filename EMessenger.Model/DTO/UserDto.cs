@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace EMessenger.Model.DTO
 {
     /// <summary>
-    /// Пользователь.
+    /// DTO для пользователя.
     /// </summary>
     public class UserDto
     {

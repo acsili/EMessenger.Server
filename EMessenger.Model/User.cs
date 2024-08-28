@@ -24,7 +24,7 @@ namespace EMessenger.Model
         /// <summary>
         /// Дата создания пользователя.
         /// </summary>
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Аккаунт.
