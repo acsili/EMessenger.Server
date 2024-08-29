@@ -13,6 +13,14 @@ namespace EMessenger.DataBaseContext.Interfaces
     public interface IUserRepository : IRepository<User>
     {
         /// <summary>
+        /// Добавить зарегистрировавшегося пользователя.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
+        /// <param name="account">Аккаунт.</param>
+        /// <returns></returns>
+        Task Add(User user, Account account);
+
+        /// <summary>
         /// Получить пользователя по никнейму.
         /// </summary>
         /// <param name="nickname">Никнейм.</param>

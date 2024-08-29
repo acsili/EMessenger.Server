@@ -36,6 +36,18 @@ namespace EMessenger.DataBaseContext.Repositories
         }
 
         /// <summary>
+        /// Добавить зарегистрировавшегося пользователя.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
+        /// <param name="account">Аккаунт.</param>
+        /// <returns></returns>
+        public async Task Add(User user, Account account)
+        {
+            await context.Users.AddAsync(user);
+            await context.Accounts.AddAsync(account);
+        }
+
+        /// <summary>
         /// Удалить пользователя.
         /// </summary>
         /// <param name="entity">Пользователь.</param>
@@ -51,7 +63,12 @@ namespace EMessenger.DataBaseContext.Repositories
         /// <returns></returns>
         public async Task<IEnumerable<User?>> GetAllAsync()
         {
-            return await context.Users.ToArrayAsync();
+            var users = await context
+                .Users
+                .Include(x => x.Account)
+                .Include(x => x.Messages)
+                .ToListAsync();
+            return users;
         }
 
         /// <summary>
@@ -61,7 +78,9 @@ namespace EMessenger.DataBaseContext.Repositories
         /// <returns></returns>
         public async Task<User?> GetByIdAsync(int id)
         {
-            return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await context
+                .Users
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         /// <summary>
@@ -100,7 +119,10 @@ namespace EMessenger.DataBaseContext.Repositories
         /// <returns>Чаты.</returns>
         public IEnumerable<Chat> GetChatsByUserId(int userId)
         {
-            return context.Users.Include(x => x.Chats).FirstOrDefault(x => x.Id == userId).Chats;
+            return context.Accounts
+                .Include(x => x.Chats)
+                .FirstOrDefault(x => x.UserId == userId)
+                .Chats;
         }
 
         #endregion

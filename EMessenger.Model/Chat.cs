@@ -30,7 +30,7 @@ namespace EMessenger.Model
         /// <summary>
         /// Список пользователей чата.
         /// </summary>
-        public List<User> Users { get; set; } = new();
+        public List<Account> Accounts { get; set; } = new();
 
         /// <summary>
         /// Список сообщений.

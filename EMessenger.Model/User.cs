@@ -36,10 +36,5 @@ namespace EMessenger.Model
         /// </summary>
         public List<Message> Messages { get; set; } = new();
 
-        /// <summary>
-        /// Список чатов.
-        /// </summary>
-        public List<Chat> Chats { get; set; } = new();
-
     }
 }

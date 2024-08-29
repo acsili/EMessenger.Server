@@ -13,6 +13,14 @@ namespace EMessenger.DataBaseContext.Interfaces
     public interface IChatRepository : IRepository<Chat>
     {
         /// <summary>
+        /// Добавить пользователя в чат.
+        /// </summary>
+        /// <param name="accountId">Идентификатор пользователя.</param>
+        /// <param name="chatId">Идентификатор чата.</param>
+        /// <returns></returns>
+        Task AddAccountInChat(int accountId, int chatId);
+
+        /// <summary>
         /// Получить все соощения из чата.
         /// </summary>
         /// <param name="chatId">Идентификатор чата.</param>

@@ -42,6 +42,29 @@ namespace EMessenger.Server.Controllers
         }
 
         /// <summary>
+        /// Добавить зарегистрировавшегося пользователя.
+        /// </summary>
+        
+        [HttpPost("AddUserAccount")]
+        public async Task<IActionResult> AddUserAccount(string nickname, string password, string login)
+        {
+            User user = new User()
+            {
+                NickName = nickname
+            };
+            Account account = new Account()
+            {
+                Password = password,
+                Login = login,
+                User = user
+            };
+            await userRepository.Add(user, account);
+            await userRepository.SaveAsync();
+            return Ok();
+            //return NotFound();
+        }
+
+        /// <summary>
         /// Получить всех пользователей.
         /// </summary>
         /// <returns>Статус запроса.</returns>

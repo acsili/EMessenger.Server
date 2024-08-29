@@ -47,8 +47,8 @@ namespace EMessenger.DataBaseContext.Repositories
         {
             return await context
                 .Chats
-                //.Include(x => x.Messages)
-                //.Include(x => x.Users)
+                .Include(x => x.Messages)
+                .Include(x => x.Accounts)
                 .ToListAsync();
         }
 
@@ -88,6 +88,19 @@ namespace EMessenger.DataBaseContext.Repositories
         public void Update(Chat entity)
         {
             context.Chats.Update(entity);
+        }
+
+        /// <summary>
+        /// Добавить пользователя в чат.
+        /// </summary>
+        /// <param name="accountId">Идентификатор пользователя.</param>
+        /// <param name="chatId">Идентификатор чата.</param>
+        /// <returns></returns>
+        public async Task AddAccountInChat(int accountId, int chatId)
+        {
+            var chat = await context.Chats.FirstOrDefaultAsync(x => x.Id == chatId);
+            var account = await context.Accounts.FirstOrDefaultAsync(x => x.Id == accountId);
+            chat.Accounts.Add(account);
         }
 
         #endregion

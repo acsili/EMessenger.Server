@@ -17,6 +17,11 @@ namespace EMessenger.Model
         public int Id { get; set; }
 
         /// <summary>
+        /// Логин.
+        /// </summary>
+        public string? Login { get; set; }  
+
+        /// <summary>
         /// Пароль.
         /// </summary>
         public string? Password { get; set; }
@@ -31,5 +36,9 @@ namespace EMessenger.Model
         /// </summary>
         public User? User { get; set; }
 
+        /// <summary>
+        /// Список чатов.
+        /// </summary>
+        public List<Chat> Chats { get; set; } = new();
     }
 }

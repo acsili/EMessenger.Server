@@ -45,6 +45,21 @@ namespace EMessenger.Server.Controllers
         }
 
         /// <summary>
+        /// Добавить пользователя в чат.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="chatId"></param>
+        /// <returns></returns>
+        [HttpPost("AddAccountInChat")]
+        public async Task<IActionResult> AddAccountInChat(int accountId, int chatId)
+        {
+            await chatRepository.AddAccountInChat(accountId, chatId);
+            await chatRepository.SaveAsync();
+            return Ok();
+            //return NotFound();
+        }
+
+        /// <summary>
         /// Получить все чаты.
         /// </summary>
         /// <returns>Чаты.</returns>

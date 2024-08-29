@@ -45,6 +45,10 @@ namespace EMessenger.DataBaseContext
         /// <param name="options"></param>
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) 
         {
+            //Удаление БД.
+            //Database.EnsureDeleted();
+
+            //Создание БД.
             Database.EnsureCreated();
         }
 
