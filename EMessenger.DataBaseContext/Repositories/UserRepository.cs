@@ -125,6 +125,15 @@ namespace EMessenger.DataBaseContext.Repositories
                 .Chats;
         }
 
+        /// <summary>
+        /// Получить последний записанный идентификатор.
+        /// </summary>
+        /// <returns>Последний записанный идентификатор.</returns>\
+        public async Task<User> GetLastUser()
+        {
+            return await context.Users.OrderBy(x => x.Id).LastOrDefaultAsync();
+        }
+
         #endregion
 
         #region Конструкторы

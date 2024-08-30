@@ -33,5 +33,11 @@ namespace EMessenger.DataBaseContext.Interfaces
         /// <param name="userId">Идентификатор пользователя.</param>
         /// <returns>Чаты.</returns>
         IEnumerable<Chat> GetChatsByUserId(int userId);
+
+        /// <summary>
+        /// Получить последний записанный идентификатор.
+        /// </summary>
+        /// <returns>Последний идентификатор.</returns>
+        Task<User> GetLastUser();
     }
 }

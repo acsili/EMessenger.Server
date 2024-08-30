@@ -19,6 +19,11 @@ namespace EMessenger.Server.Controllers
         /// </summary>
         private readonly IUserRepository userRepository;
 
+        /// <summary>
+        /// Репозиторий для работы с аккаунтом.
+        /// </summary>
+        private readonly IAccountRepository accountRepository;
+
         #endregion
 
         #region Методы
@@ -27,7 +32,7 @@ namespace EMessenger.Server.Controllers
         /// Добавить пользователя.
         /// </summary>
         /// <param name="userDto">Пользователь.</param>
-        /// <returns>Статус запроса.</returns>
+        /// <returns>Статус запроса. Id пользователя.</returns>
         [HttpPost("AddUser")]
         public  async Task<IActionResult> AddUser(UserDto userDto)
         {
@@ -37,30 +42,43 @@ namespace EMessenger.Server.Controllers
             };
             await userRepository.Add(user);
             await userRepository.SaveAsync();
-            return Ok();
+
+            var lastUser = await userRepository.GetLastUser();
+
+            return Ok(lastUser.Id);
             //return NotFound();
         }
 
         /// <summary>
         /// Добавить зарегистрировавшегося пользователя.
         /// </summary>
-        
+        /// <param name="userRegistrationDto">Пользователь.</param>
+        /// <returns>Id пользователя.</returns>
         [HttpPost("AddUserAccount")]
-        public async Task<IActionResult> AddUserAccount(string nickname, string password, string login)
+        public async Task<IActionResult> AddUserAccount(UserRegistrationDto userRegistrationDto)
         {
             User user = new User()
             {
-                NickName = nickname
+                NickName = userRegistrationDto.NickName
             };
+
+            await userRepository.Add(user);
+            await userRepository.SaveAsync();
+
+            var lastUser = await userRepository.GetLastUser();
+
             Account account = new Account()
             {
-                Password = password,
-                Login = login,
-                User = user
+                Id = lastUser.Id,
+                Password = userRegistrationDto.Password,
+                Login = userRegistrationDto.Login,
+                User = lastUser
             };
-            await userRepository.Add(user, account);
-            await userRepository.SaveAsync();
-            return Ok();
+
+            await accountRepository.Add(account);
+            await accountRepository.SaveAsync();
+
+            return Ok(lastUser.Id);
             //return NotFound();
         }
 
@@ -95,9 +113,10 @@ namespace EMessenger.Server.Controllers
         /// Конструктор.
         /// </summary>
         /// <param name="userRepository">Репозиторий пользователя.</param>
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, IAccountRepository accountRepository)
         {
             this.userRepository = userRepository;
+            this.accountRepository = accountRepository;
         }
 
         #endregion
