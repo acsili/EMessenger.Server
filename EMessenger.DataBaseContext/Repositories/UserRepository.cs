@@ -84,16 +84,6 @@ namespace EMessenger.DataBaseContext.Repositories
         }
 
         /// <summary>
-        /// Получить пользователя по никнейму.
-        /// </summary>
-        /// <param name="nickname">Пользователь.</param>
-        /// <returns></returns>
-        public async Task<User?> GetByNickName(string nickname)
-        {
-            return await context.Users.FirstOrDefaultAsync(x => x.NickName == nickname);
-        }
-
-        /// <summary>
         /// Сохранить данные в БД.
         /// </summary>
         /// <returns></returns>
@@ -132,6 +122,15 @@ namespace EMessenger.DataBaseContext.Repositories
         public async Task<User> GetLastUser()
         {
             return await context.Users.OrderBy(x => x.Id).LastOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Получить всех зарегистрировавшихся пользователей.
+        /// </summary>
+        /// <returns>Пользователи.</returns>
+        public IEnumerable<User> GetAllRegistred()
+        {
+            return context.Users.Include(x => x.Account).Where(x => x.Account != null).ToList();
         }
 
         #endregion

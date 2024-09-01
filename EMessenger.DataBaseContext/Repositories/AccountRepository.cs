@@ -1,5 +1,6 @@
 ﻿using EMessenger.DataBaseContext.Interfaces;
 using EMessenger.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,16 @@ namespace EMessenger.DataBaseContext.Repositories
         public void Update(Account entity)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Получить аккаунт по логину.
+        /// </summary>
+        /// <param name="login">Логин.</param>
+        /// <returns>Аккаунт.</returns>
+        public async Task<Account> GetByLogin(string login)
+        {
+            return await context.Accounts.FirstOrDefaultAsync(x => x.Login == login);
         }
 
         #endregion

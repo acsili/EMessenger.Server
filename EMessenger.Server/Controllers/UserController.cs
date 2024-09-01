@@ -33,8 +33,8 @@ namespace EMessenger.Server.Controllers
         /// </summary>
         /// <param name="userDto">Пользователь.</param>
         /// <returns>Статус запроса. Id пользователя.</returns>
-        [HttpPost("AddUser")]
-        public  async Task<IActionResult> AddUser(UserDto userDto)
+        [HttpPost("Add")]
+        public  async Task<IActionResult> Add(UserDto userDto)
         {
             User user = new User()
             {
@@ -54,31 +54,29 @@ namespace EMessenger.Server.Controllers
         /// </summary>
         /// <param name="userRegistrationDto">Пользователь.</param>
         /// <returns>Id пользователя.</returns>
-        [HttpPost("AddUserAccount")]
-        public async Task<IActionResult> AddUserAccount(UserRegistrationDto userRegistrationDto)
+        [HttpPost("AddWithAccount")]
+        public async Task<IActionResult> AddWithAccount(UserRegistrationDto userRegistrationDto)
         {
+            var lastUser = await userRepository.GetLastUser();
+
             User user = new User()
             {
+                Id = lastUser == null ? 1 : lastUser.Id,
                 NickName = userRegistrationDto.NickName
             };
 
-            await userRepository.Add(user);
-            await userRepository.SaveAsync();
-
-            var lastUser = await userRepository.GetLastUser();
-
             Account account = new Account()
             {
-                Id = lastUser.Id,
+                Id = user.Id,
                 Password = userRegistrationDto.Password,
                 Login = userRegistrationDto.Login,
-                User = lastUser
+                UserId = user.Id
             };
 
-            await accountRepository.Add(account);
-            await accountRepository.SaveAsync();
+            await userRepository.Add(user, account);
+            await userRepository.SaveAsync();
 
-            return Ok(lastUser.Id);
+            return Ok(user.Id);
             //return NotFound();
         }
 
@@ -86,7 +84,7 @@ namespace EMessenger.Server.Controllers
         /// Получить всех пользователей.
         /// </summary>
         /// <returns>Статус запроса.</returns>
-        [HttpGet("GetAllUsers")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllUsers()
         {
             var response = await userRepository.GetAllAsync();
@@ -102,6 +100,40 @@ namespace EMessenger.Server.Controllers
         public IActionResult GetUserChats(int userId)
         {
             var response = userRepository.GetChatsByUserId(userId);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Получить пользователя по логину и паролю.
+        /// </summary>
+        /// <param name="login">Логин.</param>
+        /// <param name="password">Пароль.</param>
+        /// <returns>Пользователь.</returns>
+        [HttpGet("GetByLoginAndPassword")]
+        public async Task<IActionResult> GetByLoginAndPassword(string login, string password)
+        {
+            Account account = await accountRepository.GetByLogin(login);
+            if (account.Password == password)
+            {
+                User user = await userRepository.GetByIdAsync(account.Id);
+                UserAuthorizationDto userAuthorizationDto = new UserAuthorizationDto()
+                {
+                    Id = account.Id,
+                    NickName = user.NickName
+                };
+                return Ok(userAuthorizationDto);
+            }
+            return BadRequest("Неверный пароль.");
+        }
+
+        /// <summary>
+        /// Получить всех зарегистрировавшихся пользователей.
+        /// </summary>
+        /// <returns>Пользователи.</returns>
+        [HttpGet("GetAllRegistred")]
+        public IActionResult GetAllRegistred()
+        {
+            var response = userRepository.GetAllRegistred();
             return Ok(response);
         }
 

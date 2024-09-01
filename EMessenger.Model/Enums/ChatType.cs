@@ -22,7 +22,7 @@ namespace EMessenger.Model.Enums
         General,
 
         /// <summary>
-        /// Беседа.
+        /// Групповой.
         /// </summary>
         Group
     }

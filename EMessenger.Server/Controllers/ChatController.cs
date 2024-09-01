@@ -4,6 +4,7 @@ using EMessenger.Model.DTO;
 using EMessenger.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using EMessenger.Model.Enums;
 
 namespace EMessenger.Server.Controllers
 {
@@ -20,6 +21,11 @@ namespace EMessenger.Server.Controllers
         /// Репозиторий для работы с чатом.
         /// </summary>
         private readonly IChatRepository chatRepository;
+
+        /// <summary>
+        /// Репозиторий для работы с пользователем.
+        /// </summary>
+        private readonly IUserRepository userRepository;
 
         #endregion
 
@@ -84,6 +90,26 @@ namespace EMessenger.Server.Controllers
             //return NotFound();
         }
 
+        /// <summary>
+        /// Получить чаты пользователя.
+        /// </summary>
+        /// <param name="userId">Идентификатор пользователя.</param>
+        /// <returns>Групповые чаты пользователя.</returns>
+        [HttpGet("GetGroupChats")]
+        public IActionResult GetGroupChats(int userId)
+        {
+            List<ChatGroupDto> chats = new List<ChatGroupDto>();
+
+            var response = userRepository
+                .GetChatsByUserId(userId)
+                .Where(x => x.Type == ChatType.Group)
+                .ToList();
+            response.ForEach(x => chats.Add(new ChatGroupDto() { Id = x.Id, Name = x.Name }));
+
+            return Ok(chats);
+            //return NotFound();
+        }
+
         #endregion
 
         #region Конструкторы
@@ -92,9 +118,10 @@ namespace EMessenger.Server.Controllers
         /// Конструктор.
         /// </summary>
         /// <param name="chatRepository">Репозиторий для работы с чатом.</param>
-        public ChatController(IChatRepository chatRepository)
+        public ChatController(IChatRepository chatRepository, IUserRepository userRepository)
         {
             this.chatRepository = chatRepository;
+            this.userRepository = userRepository;
         }
 
         #endregion

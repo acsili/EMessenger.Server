@@ -12,5 +12,11 @@ namespace EMessenger.DataBaseContext.Interfaces
     /// </summary>
     public interface IAccountRepository : IRepository<Account>
     {
+        /// <summary>
+        /// Получить аккаунт по логину.
+        /// </summary>
+        /// <param name="login">Логин.</param>
+        /// <returns>Аккаунт.</returns>
+        Task<Account> GetByLogin(string login);
     }
 }

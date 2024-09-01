@@ -1,4 +1,5 @@
 ﻿using EMessenger.Model;
+using EMessenger.Model.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,6 @@ namespace EMessenger.DataBaseContext.Interfaces
         Task Add(User user, Account account);
 
         /// <summary>
-        /// Получить пользователя по никнейму.
-        /// </summary>
-        /// <param name="nickname">Никнейм.</param>
-        /// <returns>Пользователь.</returns>
-        Task<User> GetByNickName(string nickname);
-
-        /// <summary>
         /// Получить чаты поользователя.
         /// </summary>
         /// <param name="userId">Идентификатор пользователя.</param>
@@ -39,5 +33,11 @@ namespace EMessenger.DataBaseContext.Interfaces
         /// </summary>
         /// <returns>Последний идентификатор.</returns>
         Task<User> GetLastUser();
+
+        /// <summary>
+        /// Получить всех зарегистрировавшихся пользователей.
+        /// </summary>
+        /// <returns>Пользователи.</returns>
+        IEnumerable<User> GetAllRegistred();
     }
 }
