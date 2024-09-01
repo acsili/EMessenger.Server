@@ -128,7 +128,7 @@ namespace EMessenger.DataBaseContext.Repositories
         /// Получить всех зарегистрировавшихся пользователей.
         /// </summary>
         /// <returns>Пользователи.</returns>
-        public IEnumerable<User> GetAllRegistred()
+        public IEnumerable<User> GetAllRegistered()
         {
             return context.Users.Include(x => x.Account).Where(x => x.Account != null).ToList();
         }

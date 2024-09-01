@@ -36,14 +36,15 @@ namespace EMessenger.Server.Controllers
         [HttpPost("Add")]
         public  async Task<IActionResult> Add(UserDto userDto)
         {
+            var lastUser = await userRepository.GetLastUser();
+
             User user = new User()
             {
+                Id = lastUser == null ? 1 : lastUser.Id + 1,
                 NickName = userDto.NickName
             };
             await userRepository.Add(user);
             await userRepository.SaveAsync();
-
-            var lastUser = await userRepository.GetLastUser();
 
             return Ok(lastUser.Id);
             //return NotFound();
@@ -61,7 +62,7 @@ namespace EMessenger.Server.Controllers
 
             User user = new User()
             {
-                Id = lastUser == null ? 1 : lastUser.Id,
+                Id = lastUser == null ? 1 : lastUser.Id + 1,
                 NickName = userRegistrationDto.NickName
             };
 
@@ -113,7 +114,7 @@ namespace EMessenger.Server.Controllers
         public async Task<IActionResult> GetByLoginAndPassword(string login, string password)
         {
             Account account = await accountRepository.GetByLogin(login);
-            if (account.Password == password)
+            if (account.Password == password && account != null)
             {
                 User user = await userRepository.GetByIdAsync(account.Id);
                 UserAuthorizationDto userAuthorizationDto = new UserAuthorizationDto()
@@ -133,7 +134,7 @@ namespace EMessenger.Server.Controllers
         [HttpGet("GetAllRegistred")]
         public IActionResult GetAllRegistred()
         {
-            var response = userRepository.GetAllRegistred();
+            var response = userRepository.GetAllRegistered();
             return Ok(response);
         }
 

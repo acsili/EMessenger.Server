@@ -20,6 +20,11 @@ namespace EMessenger.Server.Controllers
         /// </summary>
         private readonly IMessageRepository messageRepository;
 
+        /// <summary>
+        /// Репозиторий для работы с чатом.
+        /// </summary>
+        private readonly IChatRepository chatRepository;
+
         #endregion
 
         #region Методы
@@ -55,6 +60,18 @@ namespace EMessenger.Server.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Получить все сообщения чата.
+        /// </summary>
+        /// <param name="chatId">Id чата.</param>
+        /// <returns>Статус запроса.</returns>
+        [HttpGet("GetAllMessagesOfChat")]
+        public IActionResult GetAllMessages(int chatId)
+        {
+            var response = chatRepository.GetMessagesByIdAsync(chatId);
+            return Ok(response);
+        }
+
         #endregion
 
         #region Конструкторы
@@ -63,9 +80,10 @@ namespace EMessenger.Server.Controllers
         /// Конструктор.
         /// </summary>
         /// <param name="messageRepository">Репозиторий сообщений.</param>
-        public MessageController(IMessageRepository messageRepository)
+        public MessageController(IMessageRepository messageRepository, IChatRepository chatRepository)
         {
             this.messageRepository = messageRepository;
+            this.chatRepository = chatRepository;
         }
 
         #endregion

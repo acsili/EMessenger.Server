@@ -1,5 +1,6 @@
 ﻿using EMessenger.DataBaseContext.Interfaces;
 using EMessenger.Model;
+using EMessenger.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMessenger.DataBaseContext.Repositories
@@ -59,7 +60,7 @@ namespace EMessenger.DataBaseContext.Repositories
         /// <returns>Сообщения.</returns>
         public IEnumerable<Message> GetMessagesByIdAsync(int chatId)
         {
-            return context.Chats.Include(x => x.Messages).FirstOrDefault(x => x.Id == chatId).Messages;
+            return context.Chats.Include(x => x.Messages).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == chatId).Messages;
         }
 
         /// <summary>
@@ -70,6 +71,15 @@ namespace EMessenger.DataBaseContext.Repositories
         public async Task<Chat?> GetByIdAsync(int id)
         {
             return await context.Chats.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        /// <summary>
+        /// Получить общие чаты.
+        /// </summary>
+        /// <returns>Общие чаты.</returns>
+        public IEnumerable<Chat> GetGeneralChats()
+        {
+            return context.Chats.Where(x => x.Type == ChatType.General);
         }
 
         /// <summary>
@@ -101,6 +111,15 @@ namespace EMessenger.DataBaseContext.Repositories
             var chat = await context.Chats.FirstOrDefaultAsync(x => x.Id == chatId);
             var account = await context.Accounts.FirstOrDefaultAsync(x => x.Id == accountId);
             chat.Accounts.Add(account);
+        }
+
+        /// <summary>
+        /// Получить последний чат.
+        /// </summary>
+        /// <returns>Чат.</returns>
+        public async Task<Chat> GetLastChat()
+        {
+            return await context.Chats.LastOrDefaultAsync();
         }
 
         #endregion

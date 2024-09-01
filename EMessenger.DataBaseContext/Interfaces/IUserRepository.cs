@@ -38,6 +38,6 @@ namespace EMessenger.DataBaseContext.Interfaces
         /// Получить всех зарегистрировавшихся пользователей.
         /// </summary>
         /// <returns>Пользователи.</returns>
-        IEnumerable<User> GetAllRegistred();
+        IEnumerable<User> GetAllRegistered();
     }
 }

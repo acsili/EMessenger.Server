@@ -50,7 +50,7 @@ namespace EMessenger.DataBaseContext.Repositories
         /// <returns>Сообщения.</returns>
         public async Task<IEnumerable<Message?>> GetAllAsync()
         {
-            return await context.Messages.ToListAsync();
+            return await context.Messages.Include(x => x.User).ToListAsync();
         }
 
         /// <summary>

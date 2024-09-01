@@ -36,18 +36,22 @@ namespace EMessenger.Server.Controllers
         /// </summary>
         /// <param name="chatDto">Чат.</param>
         /// <returns>Статус запроса.</returns>
-        [HttpPost("AddChat")]
+        [HttpPost("Add")]
         public async Task<IActionResult> AddChat(ChatDto chatDto)
         {
+            var lastChat = await chatRepository.GetLastChat();
+
             Chat chat = new Chat()
             {
+                Id = lastChat == null ? 1 : lastChat.Id + 1,
                 Name = chatDto.Name,
                 Type = chatDto.Type,
             };
+
             await chatRepository.Add(chat);
             await chatRepository.SaveAsync();
-            return Ok();
-            //return NotFound();
+
+            return Ok(chat.Id);
         }
 
         /// <summary>
@@ -91,7 +95,7 @@ namespace EMessenger.Server.Controllers
         }
 
         /// <summary>
-        /// Получить чаты пользователя.
+        /// Получить групповые чаты пользователя.
         /// </summary>
         /// <param name="userId">Идентификатор пользователя.</param>
         /// <returns>Групповые чаты пользователя.</returns>
@@ -108,6 +112,21 @@ namespace EMessenger.Server.Controllers
 
             return Ok(chats);
             //return NotFound();
+        }
+
+        /// <summary>
+        /// Получить общие чаты.
+        /// </summary>
+        /// <returns>Общие чаты.</returns>
+        [HttpGet("GetGeneralChats")]
+        public IActionResult GetGeneralGhats()
+        {
+            List<ChatGroupDto> chats = new List<ChatGroupDto>();
+
+            var response = chatRepository.GetGeneralChats().ToList();
+            response.ForEach(x => chats.Add(new ChatGroupDto() { Id = x.Id, Name = x.Name }));
+
+            return Ok(chats);
         }
 
         #endregion

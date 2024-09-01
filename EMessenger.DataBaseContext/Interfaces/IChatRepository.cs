@@ -26,5 +26,17 @@ namespace EMessenger.DataBaseContext.Interfaces
         /// <param name="chatId">Идентификатор чата.</param>
         /// <returns>Сообщения.</returns>
         IEnumerable<Message> GetMessagesByIdAsync(int chatId);
+
+        /// <summary>
+        /// Получить общие чаты.
+        /// </summary>
+        /// <returns>Общие чаты.</returns>
+        public IEnumerable<Chat> GetGeneralChats();
+
+        /// <summary>
+        /// Получить последний чат.
+        /// </summary>
+        /// <returns>Чат.</returns>
+        Task<Chat> GetLastChat();
     }
 }
