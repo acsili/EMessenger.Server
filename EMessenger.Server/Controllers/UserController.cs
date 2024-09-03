@@ -52,7 +52,7 @@ namespace EMessenger.Server.Controllers
             await userRepository.Add(user);
             await userRepository.SaveAsync();
 
-            return Ok(lastUser.Id);
+            return Ok(user.Id);
             //return NotFound();
         }
 
@@ -94,6 +94,25 @@ namespace EMessenger.Server.Controllers
             await userRepository.SaveAsync();
 
             return Ok(user.Id);
+        }
+
+        /// <summary>
+        /// Удалить ползователя.
+        /// </summary>
+        /// <param name="userId">Идентификатор пользователя.</param>
+        /// <returns>Статус запроса.</returns>
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(int userId)
+        {
+            User user = await userRepository.GetByIdAsync(userId);
+
+            if (user == null)
+                return BadRequest("Такого пользователя нет.");
+
+            userRepository.Delete(user);
+            await userRepository.SaveAsync();
+
+            return Ok();
         }
 
         /// <summary>

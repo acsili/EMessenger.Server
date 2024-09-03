@@ -55,6 +55,47 @@ namespace EMessenger.Server.Controllers
         }
 
         /// <summary>
+        /// Удалить чат.
+        /// </summary>
+        /// <param name="chatId">Идентификатор чата.</param>
+        /// <returns>Статус запроса.</returns>
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteChat(int chatId)
+        {
+            Chat chat = await chatRepository.GetByIdAsync(chatId);
+
+            if (chat == null)
+                return BadRequest("Такого чата нет.");
+
+            chatRepository.Delete(chat);
+            await chatRepository.SaveAsync();
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Обновить чат.
+        /// </summary>
+        /// <param name="id">Идентификатор чата.</param>
+        /// <param name="name">Название чата.</param>
+        /// <returns>Статус запроса.</returns>
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateChat(int id, string name)
+        {
+            Chat chat = await chatRepository.GetByIdAsync(id);
+
+            if (chat == null)
+                return BadRequest("Такого чата нет.");
+
+            chat.Name = name;
+
+            chatRepository.Update(chat);
+            await chatRepository.SaveAsync();
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Добавить пользователя в чат.
         /// </summary>
         /// <param name="accountId">Id аккаунта.</param>
