@@ -93,32 +93,6 @@ namespace EMessenger.Server.Controllers
             await userRepository.Add(user, account);
             await userRepository.SaveAsync();
 
-            /*var accounts = await accountRepository.GetAllAsync();
-
-            if (accounts.Count() > 1)
-            {
-                Chat lastChat;
-                foreach (var acc in accounts)
-                {
-                    if (acc.Id == account.Id) 
-                        continue;
-
-                    lastChat = await chatRepository.GetLastChat();
-                    Chat chat = new Chat()
-                    {
-                        Id = lastChat == null ? 1 : lastChat.Id + 1,
-                        Name = "private_chat",
-                        Type = ChatType.Private
-                    };
-
-                    await chatRepository.Add(chat);
-                    await chatRepository.SaveAsync();
-                    await chatRepository.AddAccountInChat(acc.Id, chat.Id);
-                    await chatRepository.AddAccountInChat(account.Id, chat.Id);
-                    await chatRepository.SaveAsync();
-                }
-            }*/
-
             return Ok(user.Id);
         }
 

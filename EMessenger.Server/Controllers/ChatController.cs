@@ -36,7 +36,7 @@ namespace EMessenger.Server.Controllers
         /// </summary>
         /// <param name="chatDto">Чат.</param>
         /// <returns>Статус запроса.</returns>
-        [HttpPost("Add")]
+        [HttpPost("AddChat")]
         public async Task<IActionResult> AddChat(ChatDto chatDto)
         {
             var lastChat = await chatRepository.GetLastChat();
