@@ -70,7 +70,7 @@ namespace EMessenger.DataBaseContext.Repositories
         /// <returns>Чат.</returns>
         public async Task<Chat?> GetByIdAsync(int id)
         {
-            return await context.Chats.FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Chats.Include(x => x.Accounts).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace EMessenger.DataBaseContext.Repositories
         /// <returns>Чат.</returns>
         public async Task<Chat> GetLastChat()
         {
-            return await context.Chats.LastOrDefaultAsync();
+            return await context.Chats.OrderBy(x => x.Id).LastOrDefaultAsync();
         }
 
         #endregion

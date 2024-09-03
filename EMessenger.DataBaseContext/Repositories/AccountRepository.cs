@@ -40,9 +40,9 @@ namespace EMessenger.DataBaseContext.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Account?>> GetAllAsync()
+        public async Task<IEnumerable<Account?>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await context.Accounts.ToListAsync();
         }
 
         public Task<Account?> GetByIdAsync(int id)
