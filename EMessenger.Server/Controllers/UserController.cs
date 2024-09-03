@@ -129,7 +129,7 @@ namespace EMessenger.Server.Controllers
         public async Task<IActionResult> GetByLoginAndPassword(string login, string password)
         {
             Account account = await accountRepository.GetByLogin(login);
-            if (account.Password == password && account != null)
+            if (account != null && account.Password == password)
             {
                 User user = await userRepository.GetByIdAsync(account.Id);
                 UserAuthorizationDto userAuthorizationDto = new UserAuthorizationDto()
