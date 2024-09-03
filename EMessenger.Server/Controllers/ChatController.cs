@@ -63,11 +63,6 @@ namespace EMessenger.Server.Controllers
         [HttpPost("AddAccountInChat")]
         public async Task<IActionResult> AddAccountInChat(int accountId, int chatId)
         {
-            var chat = await chatRepository.GetByIdAsync(chatId); 
-            if (chat.Type == ChatType.Private && chat.Accounts.Count < 2)
-            {
-                return BadRequest("Личный чат только для двух пользователей.");
-            }
             await chatRepository.AddAccountInChat(accountId, chatId);
             await chatRepository.SaveAsync();
             return Ok();
