@@ -111,6 +111,7 @@ namespace EMessenger.DataBaseContext.Repositories
         {
             return context.Accounts
                 .Include(x => x.Chats)
+                .ThenInclude(x => x.Accounts)
                 .FirstOrDefault(x => x.UserId == userId)
                 .Chats;
         }

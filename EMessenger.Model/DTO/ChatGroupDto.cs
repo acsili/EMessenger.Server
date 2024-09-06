@@ -21,5 +21,15 @@ namespace EMessenger.Model.DTO
         /// Наименование.
         /// </summary>
         public string? Name { get; set; }
+
+        /// <summary>
+        /// Тип чата.
+        /// </summary>
+        public ChatType Type { get; set; }
+
+        /// <summary>
+        /// Список пользователей чата.
+        /// </summary>
+        public List<Account> Accounts { get; set; }
     }
 }

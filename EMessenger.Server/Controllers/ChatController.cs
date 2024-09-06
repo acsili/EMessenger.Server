@@ -148,7 +148,7 @@ namespace EMessenger.Server.Controllers
                 .GetChatsByUserId(userId)
                 .Where(x => x.Type == ChatType.Group)
                 .ToList();
-            response.ForEach(x => chats.Add(new ChatGroupDto() { Id = x.Id, Name = x.Name }));
+            response.ForEach(x => chats.Add(new ChatGroupDto() { Id = x.Id, Name = x.Name, Type = ChatType.Group, Accounts = x.Accounts }));
 
             return Ok(chats);
             //return NotFound();
