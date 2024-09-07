@@ -60,7 +60,7 @@ namespace EMessenger.DataBaseContext.Repositories
         /// <returns>Сообщения.</returns>
         public IEnumerable<Message> GetMessagesByIdAsync(int chatId)
         {
-            return context.Chats.Include(x => x.Messages).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == chatId).Messages;
+            return context.Chats.Include(x => x.Messages).ThenInclude(x => x.User).FirstOrDefault(x => x.Id == chatId)?.Messages;
         }
 
         /// <summary>
